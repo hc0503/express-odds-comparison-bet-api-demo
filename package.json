@@ -1,0 +1,48 @@
+{
+	"name": "houseace-api",
+	"version": "1.0.0",
+	"author": "Devdreamsolution <q3construction1@gmail.com>",
+	"license": "MIT",
+	"scripts": {
+		"start": "babel-node ./app/app.js",
+		"dev": "cross-env NODE_ENV=development nodemon",
+		"production": "cross-env NODE_ENV=production babel-node ./app/app.js",
+		"db:migrate": "babel-node ./migrator/start.js",
+		"db:seed": "babel-node ./migrator/seeder.js"
+	},
+	"dependencies": {
+		"bcrypt": "^5.0.0",
+		"body-parser": "^1.19.0",
+		"core-js": "^2.6.11",
+		"cors": "^2.8.5",
+		"dotenv": "^8.2.0",
+		"express": "^4.16.3",
+		"express-routes-mapper": "^1.0.2",
+		"formidable": "^1.2.2",
+		"helmet": "^3.22.0",
+		"jsonwebtoken": "^8.2.1",
+		"mysql2": "^2.1.0",
+		"pug": "^3.0.1",
+		"randomstring": "^1.2.1",
+		"sequelize": "^5.21.5",
+		"validatorjs": "^3.22.1"
+	},
+	"devDependencies": {
+		"@babel/cli": "^7.12.10",
+		"@babel/core": "^7.12.10",
+		"@babel/node": "^7.12.10",
+		"@babel/preset-env": "^7.12.11",
+		"babel-plugin-module-resolver": "^4.1.0",
+		"cross-env": "^7.0.3",
+		"nodemon": "^2.0.7"
+	},
+	"description": "Express RESTful API endpoints for Houseace",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/devdreamsolution/express-houseace-api"
+	},
+	"homepage": "https://github.com/devdreamsolution/express-houseace-api#readme",
+	"bugs": {
+		"url": "https://github.com/devdreamsolution/express-houseace-api/issues"
+	}
+}
