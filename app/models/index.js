@@ -3,7 +3,5 @@
  */
 require('./Role');
 require('./User');
-require('./Company');
-require('./CompanyImage');
 require('./DisabledRefreshToken');
 // Add your models here ...

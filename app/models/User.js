@@ -1,8 +1,6 @@
 // ORM:
 const { DataTypes } = require('sequelize');
 const database = require('#services/db.service');
-const Company = require('#models/Company');
-const CompanyImage = require('#models/CompanyImage');
 
 const bcryptSevice = require('#services/bcrypt.service');
 
@@ -76,38 +74,16 @@ User.associate = (models) => {
 		as: "role",
 		constraints: false
 	});
-	models.User.hasOne(models.Company, {
-		foreignKey: "userId",
-		as: "company",
-		constraints: false
-	});
 }
 
 User.findById = function (id) {
-	return this.findByPk(id, {
-		include: {
-			model: Company,
-			as: 'company',
-			include: {
-				model: CompanyImage,
-				as: "companyImages"
-			}
-		},
-	});
+	return this.findByPk(id);
 }
 
 User.findOneByEmail = function (email) {
 	const query = {
 		where: {
 			email
-		},
-		include: {
-			model: Company,
-			as: 'company',
-			include: {
-				model: CompanyImage,
-				as: "companyImages"
-			}
 		},
 	};
 	return this.findOne(query);
