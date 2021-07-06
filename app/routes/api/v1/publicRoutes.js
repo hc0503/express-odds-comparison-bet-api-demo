@@ -7,8 +7,4 @@ module.exports = {
 	'POST /auth/validate': 'UserController.validate',
 	'POST /auth/refresh': 'UserController.refresh',
 	'POST /auth/logout': 'UserController.logout',
-
-	// Role:
-	'GET /roles': 'RoleController.getRoles',
-
 };

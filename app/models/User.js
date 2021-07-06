@@ -26,12 +26,6 @@ const User = database.define(
 			type: DataTypes.STRING(255),
 			allowNull: true
 		},
-		roleId: {
-			type: DataTypes.UUID,
-			defaultValue: DataTypes.UUIDV4,
-			required: true,
-			allowNull: false
-		},
 		phone: {
 			type: DataTypes.STRING(255),
 			allowNull: true
@@ -67,11 +61,6 @@ User.associate = (models) => {
 	models.User.hasMany(models.DisabledRefreshToken, {
 		foreignKey: "userId",
 		as: 'disabledRefreshTokens',
-		constraints: false
-	});
-	models.User.belongsTo(models.Role, {
-		foreignKey: "roleId",
-		as: "role",
 		constraints: false
 	});
 }

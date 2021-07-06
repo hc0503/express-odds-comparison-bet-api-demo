@@ -1,10 +1,7 @@
 // Import config from .env file.
 require('dotenv').config();
-const User = require('#models/User');
-const Role = require('#models/Role');
 
 // Data to seed:
-const roles = require('./seeds/roles');
 const users = require('./seeds/users');
 // Import your seeders here...
 
@@ -26,7 +23,6 @@ async function _main() {
 		// await User.destroy({ truncate: true, cascade: false });
 		// await Role.destroy({ truncate: true, cascade: false });
 
-		await roles.run();
 		await users.run();
 		// Run seeders here...
 

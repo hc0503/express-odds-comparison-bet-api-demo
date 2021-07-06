@@ -6,5 +6,4 @@ module.exports = {
 	'POST /profiles/me/update-photo': 'ProfileController.updatePhoto',
 	'POST /profiles/me/update-data': 'ProfileController.updateData',
 	'POST /profiles/me/update-password': 'ProfileController.updatePassword',
-	'POST /profiles/me/update-type': 'ProfileController.updateType',
 };
