@@ -1,6 +1,7 @@
 // Facades:
 const usersFacade = require('#facades/users');
 const jwtFacade = require('#facades/jwt.facade');
+const validator = require('validatorjs');
 // JWT Service.
 const JWT = require('#services/jwt.service');
 // Reponse protocols.
@@ -49,22 +50,31 @@ function UserController() {
 		// Send error response with provided status code.
 		return createErrorResponse({
 			res,
-			error: {
-				message: errorMessage
-			},
-			status: statusCode
+			status: statusCode,
+			msg: errorMessage
 		});
 	}
 
 	// Auth:
 	const _register = async (req, res) => {
 		try {
-			// Extract request input:
-			const { roleId, name, email, password } = req.body;
-
+			const { name, email, password } = req.body;
+			const rules = {
+				name: ['required'],
+				email: ['required', 'email'],
+				password: ['required', 'min:8', 'confirmed'],
+				password_confirmation: ['required']
+			}
+			const validation = new validator(req.body, rules);
+			if (validation.fails()) {
+				return createErrorResponse({
+					res,
+					status: 412,
+					errors: validation.errors.errors
+				});
+			}
 			// Create new one.
 			const [tokens, user] = await usersFacade.register({
-				roleId,
 				name,
 				email,
 				password,
