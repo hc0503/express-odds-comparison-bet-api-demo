@@ -11,6 +11,7 @@ const {
 } = require('#factories/responses/api');
 // Custom error.
 const { Err } = require('#factories/errors');
+const { errors } = require('formidable');
 
 
 module.exports = UserController;
@@ -22,10 +23,11 @@ function UserController() {
 		let errorMessage = error?.message ?? 'Internal server error';
 		// Default HTTP status code.
 		let statusCode = 500;
+		let errors = {};
 
 		switch (error.name) {
 			case ('Unauthorized'):
-				errorMessage = 'Email or password are incorrect.';
+				errors = { email: ["The credential is incorrect"] };
 				statusCode = 406;
 				break;
 			case ('ValidationError'):
@@ -37,7 +39,7 @@ function UserController() {
 				statusCode = 401;
 				break;
 			case ('UserNotFound'):
-				errorMessage = "Such user doesn't exist";
+				errors = { email: ["The user doesn't exist"] };
 				statusCode = 400;
 				break;
 
@@ -51,6 +53,7 @@ function UserController() {
 		return createErrorResponse({
 			res,
 			status: statusCode,
+			errors: errors,
 			msg: errorMessage
 		});
 	}

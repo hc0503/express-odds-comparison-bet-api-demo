@@ -8,16 +8,16 @@ function _generateResponse(options = {res: null, status: 200, data: {}, errors: 
 }
 function _createOKResponse(options) {
 	return _generateResponse({
+		success: true,
 		...options,
 		status: 200,
-		success: true
 	})
 }
 function _createErrorResponse(options) {
 	return _generateResponse({
+		success: false,
 		...options,
 		status: options.status ?? 500,
-		success: false
 	})
 }
 
