@@ -1,6 +1,7 @@
 // Facades:
 const usersFacade = require('#facades/users');
 const jwtFacade = require('#facades/jwt.facade');
+const validator = require('validatorjs');
 // JWT Service.
 const JWT = require('#services/jwt.service');
 // Reponse protocols.
@@ -10,6 +11,7 @@ const {
 } = require('#factories/responses/api');
 // Custom error.
 const { Err } = require('#factories/errors');
+const { errors } = require('formidable');
 
 
 module.exports = UserController;
@@ -21,10 +23,11 @@ function UserController() {
 		let errorMessage = error?.message ?? 'Internal server error';
 		// Default HTTP status code.
 		let statusCode = 500;
+		let errors = {};
 
 		switch (error.name) {
 			case ('Unauthorized'):
-				errorMessage = 'Email or password are incorrect.';
+				errors = { email: ["The credential is incorrect"] };
 				statusCode = 406;
 				break;
 			case ('ValidationError'):
@@ -36,7 +39,7 @@ function UserController() {
 				statusCode = 401;
 				break;
 			case ('UserNotFound'):
-				errorMessage = "Such user doesn't exist";
+				errors = { email: ["The user doesn't exist"] };
 				statusCode = 400;
 				break;
 
@@ -49,22 +52,32 @@ function UserController() {
 		// Send error response with provided status code.
 		return createErrorResponse({
 			res,
-			error: {
-				message: errorMessage
-			},
-			status: statusCode
+			status: statusCode,
+			errors: errors,
+			msg: errorMessage
 		});
 	}
 
 	// Auth:
 	const _register = async (req, res) => {
 		try {
-			// Extract request input:
-			const { roleId, name, email, password } = req.body;
-
+			const { name, email, password } = req.body;
+			const rules = {
+				name: ['required'],
+				email: ['required', 'email'],
+				password: ['required', 'min:8', 'confirmed'],
+				password_confirmation: ['required']
+			}
+			const validation = new validator(req.body, rules);
+			if (validation.fails()) {
+				return createErrorResponse({
+					res,
+					status: 412,
+					errors: validation.errors.errors
+				});
+			}
 			// Create new one.
 			const [tokens, user] = await usersFacade.register({
-				roleId,
 				name,
 				email,
 				password,
